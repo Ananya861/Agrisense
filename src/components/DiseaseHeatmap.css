@@ -1,0 +1,114 @@
+.disease-heatmap-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.disease-heatmap-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.disease-heatmap-header h1 {
+  font-size: 2.5rem;
+  color: #008f57;
+  margin-bottom: 1rem;
+}
+
+.heatmap-controls {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.heatmap-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+
+.heatmap-controls select {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
+
+.risk-prediction {
+  background: rgba(230, 57, 70, 0.1);
+  border-left: 4px solid #e63946;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.risk-prediction h3 {
+  color: #e63946;
+  margin-bottom: 0.5rem;
+}
+
+.no-data {
+  text-align: center;
+  padding: 3rem;
+  color: #999;
+}
+
+.map-container {
+  background: white;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+}
+
+.popup-content h4 {
+  color: #008f57;
+  margin-bottom: 0.5rem;
+}
+
+.popup-content p {
+  margin: 0.25rem 0;
+  color: #333;
+}
+
+.heatmap-legend {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.heatmap-legend h4 {
+  color: #008f57;
+  margin-bottom: 1rem;
+}
+
+.legend-items {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.legend-color {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+@media (max-width: 768px) {
+  .legend-items {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+

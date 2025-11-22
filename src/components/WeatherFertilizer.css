@@ -1,0 +1,181 @@
+.weather-fertilizer-container {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.weather-fertilizer-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.weather-fertilizer-header h1 {
+  font-size: 2.5rem;
+  color: #008f57;
+  margin-bottom: 1rem;
+}
+
+.weather-fertilizer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.weather-section,
+.soil-section {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.weather-section h2,
+.soil-section h2 {
+  color: #008f57;
+  margin-bottom: 1.5rem;
+}
+
+.location-input {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.location-input input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
+
+.location-input button {
+  padding: 0.75rem 2rem;
+  background: #008f57;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.location-input button:hover:not(:disabled) {
+  background: #005f3b;
+}
+
+.location-input button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.weather-display {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.weather-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: rgba(0, 143, 87, 0.1);
+  border-radius: 0.75rem;
+}
+
+.weather-icon {
+  font-size: 2.5rem;
+}
+
+.weather-label {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0;
+}
+
+.weather-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #008f57;
+  margin: 0;
+}
+
+.soil-inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.soil-inputs label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.soil-inputs input {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
+
+.recommendation-section {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.generate-button {
+  width: 100%;
+  padding: 1rem;
+  background: #008f57;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-bottom: 1.5rem;
+}
+
+.generate-button:hover {
+  background: #005f3b;
+}
+
+.recommendation-result {
+  padding: 1.5rem;
+  background: rgba(0, 143, 87, 0.1);
+  border-radius: 0.75rem;
+  border-left: 4px solid #008f57;
+}
+
+.recommendation-result h3 {
+  color: #008f57;
+  margin-bottom: 1rem;
+}
+
+.recommendation-result p {
+  line-height: 1.8;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .location-input {
+    flex-direction: column;
+  }
+
+  .weather-display {
+    grid-template-columns: 1fr;
+  }
+
+  .soil-inputs {
+    grid-template-columns: 1fr;
+  }
+}
+
+

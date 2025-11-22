@@ -1,0 +1,199 @@
+.nutrient-scanner-container {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.nutrient-scanner-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.nutrient-scanner-header h1 {
+  font-size: 2.5rem;
+  color: #008f57;
+  margin-bottom: 1rem;
+}
+
+.nutrient-scanner-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.camera-section {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.camera-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 3rem;
+  border: 3px dashed #008f57;
+  border-radius: 1rem;
+  background: rgba(0, 143, 87, 0.05);
+}
+
+.camera-icon {
+  font-size: 4rem;
+}
+
+.camera-placeholder button {
+  padding: 1rem 2rem;
+  background: #008f57;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.camera-placeholder button:hover {
+  background: #005f3b;
+}
+
+.camera-view {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.camera-video {
+  width: 100%;
+  max-height: 500px;
+  border-radius: 0.75rem;
+  object-fit: contain;
+  background: #000;
+}
+
+.camera-controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.capture-btn,
+.cancel-btn {
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.capture-btn {
+  background: #008f57;
+  color: white;
+}
+
+.capture-btn:hover {
+  background: #005f3b;
+}
+
+.cancel-btn {
+  background: #e63946;
+  color: white;
+}
+
+.cancel-btn:hover {
+  background: #c1121f;
+}
+
+.scan-result {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.scan-result h3 {
+  color: #008f57;
+  margin-bottom: 1.5rem;
+}
+
+.deficiency-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: rgba(0, 143, 87, 0.1);
+  border-radius: 0.75rem;
+}
+
+.deficiency-info h4 {
+  margin: 0;
+  color: #02412a;
+  flex: 1;
+}
+
+.detected-color {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid #008f57;
+}
+
+.recommendations {
+  margin-top: 1.5rem;
+}
+
+.recommendations h4 {
+  color: #008f57;
+  margin-bottom: 1rem;
+}
+
+.recommendations ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.recommendations li {
+  padding: 1rem;
+  background: rgba(0, 143, 87, 0.05);
+  border-left: 4px solid #008f57;
+  border-radius: 0.5rem;
+  line-height: 1.6;
+}
+
+.scan-again-btn {
+  margin-top: 1.5rem;
+  padding: 0.75rem 2rem;
+  background: #008f57;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.scan-again-btn:hover {
+  background: #005f3b;
+}
+
+@media (max-width: 768px) {
+  .camera-controls {
+    flex-direction: column;
+  }
+
+  .deficiency-info {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+

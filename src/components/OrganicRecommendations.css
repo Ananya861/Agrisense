@@ -1,0 +1,149 @@
+.organic-recommendations-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.organic-recommendations-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.organic-recommendations-header h1 {
+  font-size: 2.5rem;
+  color: #008f57;
+  margin-bottom: 1rem;
+}
+
+.disease-context {
+  background: rgba(0, 143, 87, 0.1);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  display: inline-block;
+  margin-top: 1rem;
+  color: #02412a;
+  font-weight: 600;
+}
+
+.remedies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.remedy-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.remedy-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border-color: #008f57;
+}
+
+.remedy-card.selected {
+  border-color: #008f57;
+  background: rgba(0, 143, 87, 0.05);
+}
+
+.remedy-card h3 {
+  color: #008f57;
+  margin-bottom: 1rem;
+}
+
+.remedy-description {
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.remedy-details {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e0e0e0;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ingredients,
+.application {
+  margin-bottom: 1rem;
+}
+
+.ingredients h4,
+.application h4 {
+  color: #02412a;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.ingredients p,
+.application p {
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.apply-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: #008f57;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 1rem;
+}
+
+.apply-btn:hover {
+  background: #005f3b;
+}
+
+.eco-friendly-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background: rgba(0, 143, 87, 0.1);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+.eco-friendly-badge span {
+  font-size: 2rem;
+}
+
+.eco-friendly-badge p {
+  margin: 0;
+  color: #02412a;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .remedies-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
