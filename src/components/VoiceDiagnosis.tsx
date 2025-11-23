@@ -15,6 +15,7 @@ export default function VoiceDiagnosis({ locale, t }: VoiceDiagnosisProps) {
   const [isProcessing, setIsProcessing] = useState(false)
   const [error, setError] = useState<string>('')
   const recognitionRef = useRef<any>(null)
+  const voicesRef = useRef<SpeechSynthesisVoice[] | null>(null)
 
   // Language detection patterns
   const detectLanguage = useCallback((text: string): string => {
@@ -79,12 +80,41 @@ export default function VoiceDiagnosis({ locale, t }: VoiceDiagnosisProps) {
       const utterances: SpeechSynthesisUtterance[] = []
       const ttsLang = getSpeechLang(lang)
 
+      // Try to pick the best matching voice for the requested language
+      const baseLang = (ttsLang || '').split('-')[0]
+      let chosenVoice: SpeechSynthesisVoice | undefined
+      const voices: SpeechSynthesisVoice[] = (voicesRef.current && voicesRef.current.length > 0)
+        ? voicesRef.current
+        : (synth.getVoices ? (synth.getVoices() as SpeechSynthesisVoice[]) : [])
+      if (voices && voices.length > 0) {
+        // 1) exact prefix match (e.g., 'kn' or 'kn-IN')
+        chosenVoice = voices.find((v: SpeechSynthesisVoice) => v.lang && v.lang.toLowerCase().startsWith(baseLang))
+        // 2) try contains
+        if (!chosenVoice) chosenVoice = voices.find((v: SpeechSynthesisVoice) => v.lang && v.lang.toLowerCase().includes(baseLang))
+        // 3) try name match for common labels (Kannada, Hindi, Telugu, etc.)
+        if (!chosenVoice) {
+          const labels = {
+            kn: ['kannada'],
+            hi: ['hindi'],
+            te: ['telugu'],
+            ta: ['tamil'],
+            mr: ['marathi'],
+            en: ['english']
+          }
+          const tryLabels = labels[baseLang as keyof typeof labels] || []
+          chosenVoice = voices.find((v: SpeechSynthesisVoice) => tryLabels.some(lbl => v.name?.toLowerCase().includes(lbl) || v.lang?.toLowerCase().includes(lbl)))
+        }
+      }
+
       texts.forEach((text) => {
         const u = new SpeechSynthesisUtterance(text)
         try {
           u.lang = ttsLang
-        } catch (_err) {
+        } catch {
           // ignore if browser doesn't accept lang
+        }
+        if (chosenVoice) {
+          try { u.voice = chosenVoice } catch { /* ignore */ }
         }
         utterances.push(u)
       })
@@ -104,7 +134,7 @@ export default function VoiceDiagnosis({ locale, t }: VoiceDiagnosisProps) {
         }
         try {
           synth.speak(u)
-        } catch (_speakErr) {
+        } catch {
           // ignore runtime speak errors
         }
       })
@@ -113,6 +143,32 @@ export default function VoiceDiagnosis({ locale, t }: VoiceDiagnosisProps) {
       setIsSpeaking(false)
     }
   }, [getSpeechLang])
+
+  // Populate available voices (some browsers load them asynchronously)
+  useEffect(() => {
+    try {
+      const synth = (window as any).speechSynthesis
+      if (!synth) return
+      const updateVoices = () => {
+        try {
+          voicesRef.current = synth.getVoices()
+        } catch {
+          voicesRef.current = null
+        }
+      }
+      updateVoices()
+      if (typeof synth.addEventListener === 'function') {
+        synth.addEventListener('voiceschanged', updateVoices)
+      }
+      return () => {
+        if (typeof synth.removeEventListener === 'function') {
+          synth.removeEventListener('voiceschanged', updateVoices)
+        }
+      }
+    } catch (err) {
+      // ignore
+    }
+  }, [])
 
   // Process symptoms function - defined before useEffect that uses it
   const processSymptoms = useCallback((text: string, lang: string = 'en') => {
@@ -218,7 +274,7 @@ export default function VoiceDiagnosis({ locale, t }: VoiceDiagnosisProps) {
       speakSuggestions(mockSuggestions, lang)
       setIsProcessing(false)
     }, 1500)
-  }, [])
+  }, [speakSuggestions])
 
   useEffect(() => {
     // Check for browser support
@@ -269,7 +325,7 @@ export default function VoiceDiagnosis({ locale, t }: VoiceDiagnosisProps) {
         try {
           const synth = (window as any).speechSynthesis
           synth?.cancel()
-        } catch (_e) {
+        } catch {
           // ignore
         }
       } catch (err) {
@@ -312,7 +368,7 @@ export default function VoiceDiagnosis({ locale, t }: VoiceDiagnosisProps) {
       try {
         const synth = (window as any).speechSynthesis
         synth?.cancel()
-      } catch (_e) {
+      } catch {
         // ignore
       }
     }
