@@ -11,6 +11,7 @@ export default function VoiceDiagnosis({ locale, t }: VoiceDiagnosisProps) {
   const [transcript, setTranscript] = useState('')
   const [detectedLanguage, setDetectedLanguage] = useState<string>('en')
   const [suggestions, setSuggestions] = useState<string[]>([])
+  const [isSpeaking, setIsSpeaking] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
   const [error, setError] = useState<string>('')
   const recognitionRef = useRef<any>(null)
@@ -65,6 +66,53 @@ export default function VoiceDiagnosis({ locale, t }: VoiceDiagnosisProps) {
     }
     return langMap[currentLocale] || 'en-IN'
   }, [])
+
+  // Text-to-Speech helper: speak an array of suggestion strings in the detected language
+  const speakSuggestions = useCallback((texts: string[], lang: string) => {
+    try {
+      const synth = (window as any).speechSynthesis
+      if (!synth) return
+      // cancel any ongoing speech
+      synth.cancel()
+      setIsSpeaking(true)
+
+      const utterances: SpeechSynthesisUtterance[] = []
+      const ttsLang = getSpeechLang(lang)
+
+      texts.forEach((text) => {
+        const u = new SpeechSynthesisUtterance(text)
+        try {
+          u.lang = ttsLang
+        } catch (_err) {
+          // ignore if browser doesn't accept lang
+        }
+        utterances.push(u)
+      })
+
+      // track finished utterances
+      let finished = 0
+      utterances.forEach((u) => {
+        u.onend = () => {
+          finished += 1
+          if (finished === utterances.length) {
+            setIsSpeaking(false)
+          }
+        }
+        u.onerror = () => {
+          finished += 1
+          if (finished === utterances.length) setIsSpeaking(false)
+        }
+        try {
+          synth.speak(u)
+        } catch (_speakErr) {
+          // ignore runtime speak errors
+        }
+      })
+    } catch (err) {
+      console.error('TTS speak error:', err)
+      setIsSpeaking(false)
+    }
+  }, [getSpeechLang])
 
   // Process symptoms function - defined before useEffect that uses it
   const processSymptoms = useCallback((text: string, lang: string = 'en') => {
@@ -166,6 +214,8 @@ export default function VoiceDiagnosis({ locale, t }: VoiceDiagnosisProps) {
       }
 
       setSuggestions(mockSuggestions)
+      // Speak the suggestions in detected language
+      speakSuggestions(mockSuggestions, lang)
       setIsProcessing(false)
     }, 1500)
   }, [])
@@ -215,6 +265,13 @@ export default function VoiceDiagnosis({ locale, t }: VoiceDiagnosisProps) {
         setDetectedLanguage(detectedLang)
         setTranscript(transcript)
         processSymptoms(transcript, detectedLang)
+        // ensure any prior speech is cancelled when a new result is processed
+        try {
+          const synth = (window as any).speechSynthesis
+          synth?.cancel()
+        } catch (_e) {
+          // ignore
+        }
       } catch (err) {
         console.error('Error processing result:', err)
         setError('Error processing speech. Please try again.')
@@ -251,6 +308,13 @@ export default function VoiceDiagnosis({ locale, t }: VoiceDiagnosisProps) {
           // Ignore cleanup errors
         }
       }
+      // cancel any ongoing speech on unmount
+      try {
+        const synth = (window as any).speechSynthesis
+        synth?.cancel()
+      } catch (_e) {
+        // ignore
+      }
     }
   }, [locale, detectLanguage, getSpeechLang, processSymptoms])
 
@@ -274,6 +338,14 @@ export default function VoiceDiagnosis({ locale, t }: VoiceDiagnosisProps) {
         recognitionRef.current.stop()
       } catch {
         // Ignore if not running
+      }
+      // also cancel any speaking when starting a new recording
+      try {
+        const synth = (window as any).speechSynthesis
+        synth?.cancel()
+        setIsSpeaking(false)
+      } catch (_e) {
+        // ignore
       }
       
       // Small delay to ensure previous recognition is fully stopped
@@ -403,6 +475,11 @@ export default function VoiceDiagnosis({ locale, t }: VoiceDiagnosisProps) {
                 : detectedLanguage === 'mr' ? 'सुझाव'
                 : 'Suggestions'}
               </h3>
+              {isSpeaking && (
+                <div style={{ marginBottom: '0.5rem', color: '#1565c0', fontWeight: 600 }}>
+                  🔊 {locale === 'en' ? 'Speaking...' : locale === 'kn' ? 'ಮುಖವಾಗಿ ಹೇಳಲಾಗುತ್ತಿದೆ...' : locale === 'hi' ? 'बोल रहा है...' : 'Speaking...'}
+                </div>
+              )}
               <ul>
                 {suggestions.map((suggestion, idx) => (
                   <li key={idx}>{suggestion}</li>
