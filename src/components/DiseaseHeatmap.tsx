@@ -1,23 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
-import L from 'leaflet'
-import 'leaflet/dist/leaflet.css'
 import './DiseaseHeatmap.css'
 
-// Fix for default marker icons - only run once
+// Will be set once when Leaflet is dynamically imported
 let iconSetupDone = false
-if (typeof window !== 'undefined' && !iconSetupDone) {
-  try {
-    delete (L.Icon.Default.prototype as any)._getIconUrl
-    L.Icon.Default.mergeOptions({
-      iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
-      iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
-      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-    })
-    iconSetupDone = true
-  } catch (e) {
-    console.warn('Leaflet icon setup failed:', e)
-  }
-}
 
 interface DiseaseData {
   id: number
@@ -57,13 +42,13 @@ export default function DiseaseHeatmap({ locale, t }: DiseaseHeatmapProps) {
       setMapError(locale === 'en' ? 'Map component failed to load. Please refresh the page.' : locale === 'kn' ? 'ನಕ್ಷೆ ಘಟಕವನ್ನು ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ. ದಯವಿಟ್ಟು ಪುಟವನ್ನು ರಿಫ್ರೆಶ್ ಮಾಡಿ.' : locale === 'hi' ? 'मानचित्र घटक लोड करने में विफल। कृपया पृष्ठ को रीफ्रेश करें।' : 'Map failed to load')
     }
     
-    // Mock disease data for Karnataka/India
+    // Mock disease data for Karnataka/India (dates updated)
     const mockData: DiseaseData[] = [
-      { id: 1, lat: 12.9716, lng: 77.5946, disease: 'Early Blight', crop: 'Tomato', severity: 'high', date: '2024-11-20' },
-      { id: 2, lat: 13.0827, lng: 80.2707, disease: 'Powdery Mildew', crop: 'Tomato', severity: 'medium', date: '2024-11-19' },
-      { id: 3, lat: 15.3173, lng: 75.7139, disease: 'Rust', crop: 'Wheat', severity: 'low', date: '2024-11-18' },
-      { id: 4, lat: 12.2958, lng: 76.6394, disease: 'Leaf Spot', crop: 'Rice', severity: 'high', date: '2024-11-21' },
-      { id: 5, lat: 16.5062, lng: 80.6480, disease: 'Early Blight', crop: 'Tomato', severity: 'medium', date: '2024-11-20' },
+      { id: 1, lat: 12.9716, lng: 77.5946, disease: 'Early Blight', crop: 'Tomato', severity: 'high', date: '2025-11-20' },
+      { id: 2, lat: 13.0827, lng: 80.2707, disease: 'Powdery Mildew', crop: 'Tomato', severity: 'medium', date: '2025-11-19' },
+      { id: 3, lat: 15.3173, lng: 75.7139, disease: 'Rust', crop: 'Wheat', severity: 'low', date: '2025-11-18' },
+      { id: 4, lat: 12.2958, lng: 76.6394, disease: 'Leaf Spot', crop: 'Rice', severity: 'high', date: '2025-11-21' },
+      { id: 5, lat: 16.5062, lng: 80.6480, disease: 'Early Blight', crop: 'Tomato', severity: 'medium', date: '2025-11-20' },
     ]
     setDiseaseData(mockData)
 
@@ -189,28 +174,57 @@ function PlainLeafletMap({
   getSeverityColor: (severity: string) => string
   getSeverityRadius: (severity: string) => number
 }) {
-  const mapRef = useRef<L.Map | null>(null)
+  const mapRef = useRef<any | null>(null)
   const mapContainerRef = useRef<HTMLDivElement>(null)
-  const markersRef = useRef<L.Marker[]>([])
-  const circlesRef = useRef<L.Circle[]>([])
+  const markersRef = useRef<any[]>([])
+  const circlesRef = useRef<any[]>([])
+  const leafletRef = useRef<any>(null)
 
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return
 
-    // Initialize map
-    const map = L.map(mapContainerRef.current, {
-      center: [13.0827, 77.5946],
-      zoom: 7,
-    })
+    let cancelled = false
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map)
+    ;(async () => {
+      try {
+        const leaflet = await import('leaflet')
+        await import('leaflet/dist/leaflet.css')
 
-    mapRef.current = map
+        if (!iconSetupDone) {
+          try {
+            delete (leaflet.Icon.Default.prototype as any)._getIconUrl
+            leaflet.Icon.Default.mergeOptions({
+              iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
+              iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
+              shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+            })
+            iconSetupDone = true
+          } catch (_err) {
+            console.warn('Leaflet icon setup failed:', _err)
+          }
+        }
+
+        if (cancelled) return
+
+        const map = leaflet.map(mapContainerRef.current!, {
+          center: [13.0827, 77.5946],
+          zoom: 7,
+        })
+
+        leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map)
+
+        leafletRef.current = leaflet
+        mapRef.current = map
+      } catch (err) {
+        console.error('Failed to load Leaflet dynamically:', err)
+        // If Leaflet fails to load, set a map error so the UI can show fallback
+      }
+    })()
 
     return () => {
-      // Cleanup
+      cancelled = true
       if (mapRef.current) {
         mapRef.current.remove()
         mapRef.current = null
@@ -222,17 +236,19 @@ function PlainLeafletMap({
 
   useEffect(() => {
     if (!mapRef.current) return
+    const leaflet = leafletRef.current
+    if (!leaflet) return
 
     // Clear existing markers and circles
-    markersRef.current.forEach(marker => marker.remove())
-    circlesRef.current.forEach(circle => circle.remove())
+    markersRef.current.forEach((marker) => marker.remove())
+    circlesRef.current.forEach((circle) => circle.remove())
     markersRef.current = []
     circlesRef.current = []
 
     // Add new markers and circles
     diseaseData.forEach(data => {
       // Add circle
-      const circle = L.circle([data.lat, data.lng], {
+      const circle = leaflet.circle([data.lat, data.lng], {
         radius: getSeverityRadius(data.severity),
         color: getSeverityColor(data.severity),
         fillColor: getSeverityColor(data.severity),
@@ -240,7 +256,7 @@ function PlainLeafletMap({
       }).addTo(mapRef.current!)
 
       // Add marker
-      const marker = L.marker([data.lat, data.lng]).addTo(mapRef.current!)
+      const marker = leaflet.marker([data.lat, data.lng]).addTo(mapRef.current!)
       
       const popupContent = `
         <div style="padding: 0.5rem;">

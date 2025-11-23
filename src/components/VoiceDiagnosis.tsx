@@ -183,7 +183,7 @@ export default function VoiceDiagnosis({ locale, t }: VoiceDiagnosisProps) {
     if (recognitionRef.current) {
       try {
         recognitionRef.current.stop()
-      } catch (e) {
+      } catch {
         // Ignore errors when stopping
       }
     }
@@ -247,7 +247,7 @@ export default function VoiceDiagnosis({ locale, t }: VoiceDiagnosisProps) {
       if (recognitionRef.current) {
         try {
           recognitionRef.current.stop()
-        } catch (e) {
+        } catch {
           // Ignore cleanup errors
         }
       }
@@ -272,7 +272,7 @@ export default function VoiceDiagnosis({ locale, t }: VoiceDiagnosisProps) {
       // Stop any existing recognition first
       try {
         recognitionRef.current.stop()
-      } catch (e) {
+      } catch {
         // Ignore if not running
       }
       

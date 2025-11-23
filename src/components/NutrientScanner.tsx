@@ -23,7 +23,8 @@ export default function NutrientScanner({ locale, t }: NutrientScannerProps) {
         videoRef.current.srcObject = stream
         setIsScanning(true)
       }
-    } catch (error) {
+    } catch (err) {
+      console.error('Camera access error:', err)
       alert(locale === 'en' ? 'Camera access denied' : locale === 'kn' ? 'ಕ್ಯಾಮೆರಾ ಪ್ರವೇಶ ನಿರಾಕರಿಸಲಾಗಿದೆ' : locale === 'hi' ? 'कैमरा एक्सेस अस्वीकृत' : 'Camera denied')
     }
   }

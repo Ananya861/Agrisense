@@ -99,6 +99,7 @@ export default function Login({ locale, t }: LoginProps) {
         navigate('/home')
       }, 1500)
     } catch (err: any) {
+      console.error('Login error:', err)
       setError(locale === 'en' ? 'Login failed. Please try again.' : locale === 'kn' ? 'ಲಾಗಿನ್ ವಿಫಲವಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.' : locale === 'hi' ? 'लॉगिन विफल। कृपया पुनः प्रयास करें।' : 'Login failed')
     } finally {
       setIsSubmitting(false)
