@@ -85,7 +85,7 @@ export default function Layout({ children, locale, setLocale, t }: LayoutProps) 
         {children}
       </main>
       <footer className="app-footer">
-        <p>© 2024 AgriSense - AI-Powered Agriculture Platform</p>
+        <p>© 2025 AgriSense - AI-Powered Agriculture Platform</p>
         <p>{locale === 'en' ? 'Supporting farmers with technology' : locale === 'kn' ? 'ತಂತ್ರಜ್ಞಾನದೊಂದಿಗೆ ರೈತರಿಗೆ ಬೆಂಬಲ' : locale === 'hi' ? 'तकनीक के साथ किसानों का समर्थन' : 'Supporting farmers'}</p>
       </footer>
     </div>
