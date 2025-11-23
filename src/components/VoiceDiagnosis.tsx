@@ -183,7 +183,7 @@ export default function VoiceDiagnosis({ locale, t }: VoiceDiagnosisProps) {
     if (recognitionRef.current) {
       try {
         recognitionRef.current.stop()
-      } catch {
+      } catch (e) {
         // Ignore errors when stopping
       }
     }
@@ -196,8 +196,8 @@ export default function VoiceDiagnosis({ locale, t }: VoiceDiagnosisProps) {
       const langCode = getSpeechLang(locale)
       recognition.lang = langCode
       console.log('Speech recognition language set to:', langCode)
-    } catch {
-      console.warn('Failed to set language, using default:')
+    } catch (e) {
+      console.warn('Failed to set language, using default:', e)
       recognition.lang = 'en-IN' // Fallback to English
     }
 
@@ -247,7 +247,7 @@ export default function VoiceDiagnosis({ locale, t }: VoiceDiagnosisProps) {
       if (recognitionRef.current) {
         try {
           recognitionRef.current.stop()
-        } catch {
+        } catch (e) {
           // Ignore cleanup errors
         }
       }
@@ -272,7 +272,7 @@ export default function VoiceDiagnosis({ locale, t }: VoiceDiagnosisProps) {
       // Stop any existing recognition first
       try {
         recognitionRef.current.stop()
-      } catch {
+      } catch (e) {
         // Ignore if not running
       }
       

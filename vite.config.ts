@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
+// https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
@@ -38,7 +39,7 @@ export default defineConfig({
               cacheName: 'api-cache',
               expiration: {
                 maxEntries: 50,
-                maxAgeSeconds: 60 * 60 * 24
+                maxAgeSeconds: 60 * 60 * 24 // 24 hours
               }
             }
           }
@@ -46,19 +47,4 @@ export default defineConfig({
       }
     })
   ],
-
-  // 🔥 Remove "500 KB chunk size" warning
-  build: {
-    chunkSizeWarningLimit: 2000, // allow up to 2 MB
-    
-    // 🔥 Split large bundles for better performance
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          react: ['react', 'react-dom'],
-          router: ['react-router-dom']
-        }
-      }
-    }
-  }
 })

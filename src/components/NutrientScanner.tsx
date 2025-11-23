@@ -24,7 +24,6 @@ export default function NutrientScanner({ locale, t }: NutrientScannerProps) {
         setIsScanning(true)
       }
     } catch (error) {
-      console.error(error)
       alert(locale === 'en' ? 'Camera access denied' : locale === 'kn' ? 'ಕ್ಯಾಮೆರಾ ಪ್ರವೇಶ ನಿರಾಕರಿಸಲಾಗಿದೆ' : locale === 'hi' ? 'कैमरा एक्सेस अस्वीकृत' : 'Camera denied')
     }
   }
@@ -181,7 +180,6 @@ export default function NutrientScanner({ locale, t }: NutrientScannerProps) {
     </div>
   )
 }
-
 
 
 

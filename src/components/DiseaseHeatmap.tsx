@@ -59,11 +59,11 @@ export default function DiseaseHeatmap({ locale, t }: DiseaseHeatmapProps) {
     
     // Mock disease data for Karnataka/India
     const mockData: DiseaseData[] = [
-      { id: 1, lat: 12.9716, lng: 77.5946, disease: 'Early Blight', crop: 'Tomato', severity: 'high', date: '2025-11-20' },
-      { id: 2, lat: 13.0827, lng: 80.2707, disease: 'Powdery Mildew', crop: 'Tomato', severity: 'medium', date: '2025-11-19' },
-      { id: 3, lat: 15.3173, lng: 75.7139, disease: 'Rust', crop: 'Wheat', severity: 'low', date: '2025-11-18' },
-      { id: 4, lat: 12.2958, lng: 76.6394, disease: 'Leaf Spot', crop: 'Rice', severity: 'high', date: '2025-11-21' },
-      { id: 5, lat: 16.5062, lng: 80.6480, disease: 'Early Blight', crop: 'Tomato', severity: 'medium', date: '2025-11-20' },
+      { id: 1, lat: 12.9716, lng: 77.5946, disease: 'Early Blight', crop: 'Tomato', severity: 'high', date: '2024-11-20' },
+      { id: 2, lat: 13.0827, lng: 80.2707, disease: 'Powdery Mildew', crop: 'Tomato', severity: 'medium', date: '2024-11-19' },
+      { id: 3, lat: 15.3173, lng: 75.7139, disease: 'Rust', crop: 'Wheat', severity: 'low', date: '2024-11-18' },
+      { id: 4, lat: 12.2958, lng: 76.6394, disease: 'Leaf Spot', crop: 'Rice', severity: 'high', date: '2024-11-21' },
+      { id: 5, lat: 16.5062, lng: 80.6480, disease: 'Early Blight', crop: 'Tomato', severity: 'medium', date: '2024-11-20' },
     ]
     setDiseaseData(mockData)
 
